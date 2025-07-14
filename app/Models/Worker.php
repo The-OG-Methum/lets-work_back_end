@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Worker extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nic',
+        'name',
+        'address',
+        'daily_rate',
+        'transportaion_fee',
+        'zone'
+
+    ];
 }
