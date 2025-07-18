@@ -6,7 +6,7 @@ use App\Models\AttendanceRecord;
 use App\Models\Worker;
 use Illuminate\Http\Request;
 
-class AttendanceController extends Controller
+class AttendanceController extends UserController
 {
     public function index($worker_id,Request $request){
 
@@ -30,7 +30,6 @@ class AttendanceController extends Controller
  // "totalOvertime": 1500,
  // "totalSalary": 51100
 //
-
 
         $month = $request->query('month');
         $year = $request->query('year');
@@ -69,5 +68,51 @@ class AttendanceController extends Controller
     
 
 }
+
+
+    public function createAttendance($worker_id,Request $request){
+
+         $request->validate([
+            'month'=>'required|integer|min:1|max:12',
+            'year'=>'required|integer',
+            'attendance'=>'required|array'
+        ]);
+        
+        $month = $request['month'];
+        $year  = $request['year'];
+        $attendance = $request['attendance'];
+
+       $record = AttendanceRecord::updateOrCreate([
+        
+        'worker_id'=>$worker_id,
+        'month'=>$month,
+        'year'=>$year,
+        
+       ],
+       
+       [
+        'attendance'=>$attendance
+       ]);
+
+
+       return response()->json([
+        'success'=>'true',
+        'message'=>'Attendance Saved Successfully',
+        'attendance'=>$record->attendance
+       ]);
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 
 }

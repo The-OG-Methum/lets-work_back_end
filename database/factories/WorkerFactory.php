@@ -23,7 +23,7 @@ class WorkerFactory extends Factory
         'address' => $this->faker->address(),
         'daily_rate' => $this->faker->randomFloat(2, 50, 200),
         'transportation_fee' => $this->faker->randomFloat(2, 5, 20),
-        'zone' => $this->faker->randomElement(['Zone A', 'Zone B', 'Zone C']),
+        'status' => $this->faker->randomElement(['working','not working']),
             //
         ];
     }

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->decimal('daily_rate',10,2);
-            $table->decimal('transportation_fee',10,2);
-            $table->string('zone');
+            $table->decimal('transportation_fee',10,2)->nullable(true);
+            $table->string('status')->default('working');
             $table->timestamps();
         });
     }

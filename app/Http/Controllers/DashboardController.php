@@ -2,26 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttendanceRecord;
 use App\Models\Worker;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class DashboardController extends UserController
 {
     /**
      * Display a listing of the resource.
      */
    public function index()
 {
-    $allWorkers = Worker::count();
-
+    $allWorkers = Worker::where('status','working')->count();
     $allWorkersDailyRates = Worker::sum('daily_rate');
+    $avgDailyRate = $allWorkers > 0 ? $allWorkersDailyRates / $allWorkers : 0;
 
-    $avgDailyRate = $allWorkersDailyRates / $allWorkers;
+    // Total attendance: sum of all worked days across all records
+    $totalAttendance = AttendanceRecord::all()->
+    where('status','working')
+    ->sum(function($record) {
+        return collect($record->attendance)
+            ->where('isWorked', true)
+            ->count();
+    });
+
+    // Total salaries: sum of all workers' total_salary
+    $totalSalaries = Worker::all()->where('status','working')->sum(function($worker) {
+        return $worker->total_salary; // uses your accessor
+    });
 
     return response()->json([
         'totalWorkers' => $allWorkers,
-        'totalSalaries' => 500,
-        'totalAttendance' => 50,
+        'totalSalaries' => $totalSalaries,
+        'totalAttendance' => $totalAttendance,
         'avgDailyRate' => $avgDailyRate
     ]);
 }
