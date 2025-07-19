@@ -32,8 +32,8 @@ class WorkerController extends UserController
 {
     $validated = $request->validate([
         'nic' => 'required|string|min:10|max:15|unique:workers,nic',
-        'name' => 'required|string|min:3|max:25',
-        'address' => 'required|string|min:3|max:30',
+        'name' => 'required|string|max:55',
+        'address' => 'required|string|max:220',
         'daily_rate' => 'required|numeric',
         'transportation_fee' => 'nullable|numeric',
         'status' => 'required|in:working,not working'
@@ -53,8 +53,8 @@ class WorkerController extends UserController
     public function show(string $id)
     {
         //
-    }
 
+    }
     /**
      * Show the form for editing the specified resource.
      */

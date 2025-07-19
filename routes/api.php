@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/workers/{id}',[WorkerController::class,'destroy']);
 
     Route::put('/workers/{id}',[WorkerController::class,'update']);
+
+    Route::post('/logout',[UserController::class,'logout']);
 });
 
 // Public routes
